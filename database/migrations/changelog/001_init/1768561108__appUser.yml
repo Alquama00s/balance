@@ -1,0 +1,14 @@
+databaseChangeLog:
+- changeSet:
+    id: appUser-1768561108
+    author: alquama00s
+    changes:
+      - sql:
+            comment: add user to database
+            sql: | 
+              CREATE ROLE backend WITH LOGIN PASSWORD '${backend.password}';
+            stripComments: false
+    rollback:
+      - sql:
+          sql: |
+            DROP ROLE IF EXISTS backend;

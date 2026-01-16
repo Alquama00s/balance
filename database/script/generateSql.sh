@@ -1,0 +1,1 @@
+liquibase updateSql > database/change.gen.sql

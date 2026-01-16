@@ -1,0 +1,17 @@
+databaseChangeLog:
+- changeSet:
+    id: appSchema-1768561117
+    author: alquama00s
+    changes:
+      changes:
+        - sql:
+            comment: add the application schema named balance
+            sql: | 
+              CREATE SCHEMA IF NOT EXISTS balance;
+              GRANT ALL ON SCHEMA balance TO backend;
+            stripComments: false
+      rollback:
+        - sql:
+            sql: |
+              REVOKE ALL ON SCHEMA balance FROM backend; 
+              DROP SCHEMA IF EXISTS balance CASCADE;

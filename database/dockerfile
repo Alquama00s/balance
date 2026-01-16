@@ -1,9 +1,8 @@
 FROM docker.io/library/postgres:18
 
-ENV POSTGRES_USER=backend
-ENV POSTGRES_PASSWORD=some@pass@dhjt26_dhywgh
-ENV POSTGRES_DB=postgres
+ENV POSTGRES_USER=admin
+ENV POSTGRES_DB=balance
 
-COPY sql/ /docker-entrypoint-initdb.d/
+COPY database/init/ /docker-entrypoint-initdb.d/
 
 EXPOSE 5432

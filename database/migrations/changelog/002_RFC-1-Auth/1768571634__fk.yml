@@ -1,0 +1,34 @@
+databaseChangeLog:
+- changeSet:
+    id: fk-1768571634
+    author: alquama00s
+    changes:
+        - addForeignKeyConstraint:
+            baseTableName: user_role
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_user_role_user_id
+            onUpdate: RESTRICT
+        - addForeignKeyConstraint:
+            baseTableName: user_role
+            baseColumnNames: role_id
+            referencedTableName: roles
+            referencedColumnNames: id
+            constraintName: fk_user_role_role_id
+            onUpdate: RESTRICT
+        - addForeignKeyConstraint:
+            baseTableName: role_privilege
+            baseColumnNames: role_id
+            referencedTableName: roles
+            referencedColumnNames: id
+            constraintName: fk_role_privilege_role_id
+            onUpdate: RESTRICT
+        - addForeignKeyConstraint:
+            baseTableName: role_privilege
+            baseColumnNames: privilege_id
+            referencedTableName: privileges
+            referencedColumnNames: id
+            constraintName: fk_role_privilege_privilege_id
+            onUpdate: RESTRICT
+

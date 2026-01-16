@@ -1,0 +1,39 @@
+databaseChangeLog:
+  - property:
+        name: table
+        value: roles
+  - changeSet:
+        id: role-1768571068
+        author: alquama00s
+        changes:
+          - createTable:
+                ifNotExists: true
+                tableName: roles
+                columns:
+                  - column:
+                        name: id
+                        type: uuid
+                        defaultValueComputed: gen_random_uuid()
+                  - column:
+                        name: name
+                        type: varchar(100)
+                        constraints:
+                            nullable: false
+                            unique: true
+                  - column:
+                        name: description
+                        type: text
+          - createTable:
+                ifNotExists: true
+                tableName: user_role
+                columns:
+                  - column:
+                        name: user_id
+                        type: uuid
+                  - column:
+                        name: role_id
+                        type: uuid
+  - include:
+        file: ${commons.path}/audit-columns.yml
+  - include:
+        file: ${commons.path}/audit-fk.yml

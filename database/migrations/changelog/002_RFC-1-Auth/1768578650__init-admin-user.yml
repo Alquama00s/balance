@@ -1,0 +1,20 @@
+databaseChangeLog:
+- changeSet:
+    id: init-admin-user-1768578650
+    author: alquama00s
+    changes:
+    - insert:
+        tableName: users
+        columns:
+        - column:
+            name: username
+            value: admin
+        - column:
+            name: email
+            value: admin@balance.com
+        - column:
+            name: password_hash
+            value: admin_password_hash
+        - column:
+            name: created_at
+            valueComputed: CURRENT_TIMESTAMP

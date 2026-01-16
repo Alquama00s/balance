@@ -1,0 +1,25 @@
+databaseChangeLog:
+- changeSet:
+    id: pk-1768571468
+    author: alquama00s
+    changes:
+      - addPrimaryKey:
+            tableName: users
+            columnNames: id
+            constraintName: pk_user
+      - addPrimaryKey:
+            tableName: roles
+            columnNames: id
+            constraintName: pk_role
+      - addPrimaryKey:
+            tableName: privileges
+            columnNames: id
+            constraintName: pk_privilege
+      - addPrimaryKey:
+            tableName: user_role
+            columnNames: user_id, role_id
+            constraintName: pk_user_role
+      - addPrimaryKey:
+            tableName: role_privilege
+            columnNames: role_id, privilege_id
+            constraintName: pk_role_privilege

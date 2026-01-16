@@ -1,0 +1,35 @@
+databaseChangeLog:
+  - property:
+        name: table
+        value: users
+  - changeSet:
+        id: users-1768561362
+        author: alquama00s
+        changes:
+          - createTable:
+                ifNotExists: true
+                tableName: users
+                columns:
+                  - column:
+                        name: id
+                        type: uuid
+                        defaultValueComputed: gen_random_uuid()
+                  - column:
+                        name: username
+                        type: varchar(255)
+                        constraints:
+                            nullable: false
+                            unique: true
+                  - column:
+                        name: email
+                        type: varchar(255)
+                        constraints:
+                            nullable: false
+                            unique: true
+                  - column:
+                        name: password_hash
+                        type: varchar(255)
+                        constraints:
+                            nullable: false
+  - include:
+        file: ${commons.path}/audit-columns.yml

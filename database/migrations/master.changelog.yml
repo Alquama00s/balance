@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - includeAll:
+      path: changelog
+      relativeToChangelogFile: true 
+  - property:
+      name: backend.password
+      value: jhfui@86786JGHJKI
+  - property:
+      name: commons.path
+      value: database/migrations/commons

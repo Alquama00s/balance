@@ -1,0 +1,15 @@
+databaseChangeLog:
+- changeSet:
+    id: update-admin-user-1768580003
+    author: alquama00s
+    changes:
+    - update:
+        tableName: users
+        columns:
+        - column:
+            name: created_by
+            valueComputed: (SELECT id FROM users WHERE username = 'admin')
+        where: username = 'admin'
+
+- include:
+    file: ${commons.path}/audit-fk.yml

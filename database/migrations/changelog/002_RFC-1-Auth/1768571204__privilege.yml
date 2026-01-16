@@ -1,0 +1,38 @@
+databaseChangeLog:
+  - property:
+        name: table
+        value: privileges
+  - changeSet:
+        id: privilege-1768571204
+        author: alquama00s
+        changes:
+          - createTable:
+                ifNotExists: true
+                tableName: privileges
+                columns:
+                  - column:
+                        name: id
+                        type: uuid
+                        defaultValueComputed: gen_random_uuid()
+                  - column:
+                        name: name
+                        type: varchar(100)
+                        constraints:
+                            nullable: false
+                            unique: true
+                  - column:
+                        name: description
+                        type: text
+          - createTable:
+                tableName: role_privilege
+                columns:
+                  - column:
+                        name: role_id
+                        type: uuid
+                  - column:
+                        name: privilege_id
+                        type: uuid
+  - include:
+        file: ${commons.path}/audit-columns.yml
+  - include:
+        file: ${commons.path}/audit-fk.yml
