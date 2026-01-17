@@ -31,5 +31,3 @@ databaseChangeLog:
                         type: varchar(255)
                         constraints:
                             nullable: false
-  - include:
-        file: ${commons.path}/audit-columns.yml

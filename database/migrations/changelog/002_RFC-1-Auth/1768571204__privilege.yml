@@ -32,7 +32,3 @@ databaseChangeLog:
                   - column:
                         name: privilege_id
                         type: uuid
-  - include:
-        file: ${commons.path}/audit-columns.yml
-  - include:
-        file: ${commons.path}/audit-fk.yml

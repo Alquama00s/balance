@@ -10,6 +10,3 @@ databaseChangeLog:
             name: created_by
             valueComputed: (SELECT id FROM users WHERE username = 'admin')
         where: username = 'admin'
-
-- include:
-    file: ${commons.path}/audit-fk.yml

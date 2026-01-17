@@ -33,7 +33,3 @@ databaseChangeLog:
                   - column:
                         name: role_id
                         type: uuid
-  - include:
-        file: ${commons.path}/audit-columns.yml
-  - include:
-        file: ${commons.path}/audit-fk.yml

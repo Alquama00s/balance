@@ -1,0 +1,19 @@
+# ---------- Core formatting ----------
+tabWidth: 2
+useTabs: false
+printWidth: 100
+
+# ---------- Quotes ----------
+singleQuote: false
+quoteProps: as-needed
+
+# ---------- General consistency ----------
+bracketSpacing: true
+semi: false
+trailingComma: none
+
+# ---------- End-of-line handling ----------
+endOfLine: lf
+
+# ---------- Embedded languages ----------
+embeddedLanguageFormatting: auto
