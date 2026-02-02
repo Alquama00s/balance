@@ -13,7 +13,7 @@ databaseChangeLog:
                   - column:
                         name: id
                         type: uuid
-                        defaultValueComputed: gen_random_uuid()
+                        defaultValueComputed: uuidv7()
                   - column:
                         name: username
                         type: varchar(255)
