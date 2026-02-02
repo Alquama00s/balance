@@ -11,3 +11,9 @@ docker build -t balance/postgres:1 -f database/dockerfile .
 docker run --name balance-db -p 5482:5432 -e POSTGRES_PASSWORD=dgfvtygfvt@2534HG -d balance/postgres:1
 
 ```
+
+2. destroy db container
+```sh
+docker stop balance-db && docker container rm balance-db
+
+```
