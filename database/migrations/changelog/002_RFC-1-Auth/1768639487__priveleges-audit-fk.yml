@@ -25,7 +25,7 @@ databaseChangeLog:
                 constraintName: deleted_by_fk_privileges
                 onUpdate: RESTRICT
           - addNotNullConstraint:
-                tableName: users
+                tableName: privileges
                 columnName: created_by
                 columnDataType: uuid
                 validate: false
