@@ -25,7 +25,7 @@ public class Role extends BaseAuditEntity {
     @Column(name = "description")
     private String description;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "role_privilege",
             joinColumns = @JoinColumn(name = "role_id"),
