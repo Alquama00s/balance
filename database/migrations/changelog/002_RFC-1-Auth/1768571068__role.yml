@@ -33,3 +33,9 @@ databaseChangeLog:
                   - column:
                         name: role_id
                         type: uuid
+          - sql:
+                  comment: add the application schema named balance
+                  sql: | 
+                        GRANT ALL ON Table roles TO backend;
+                        GRANT ALL ON Table user_role TO backend;
+                  stripComments: false

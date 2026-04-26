@@ -31,3 +31,8 @@ databaseChangeLog:
                         type: varchar(255)
                         constraints:
                             nullable: false
+          - sql:
+                  comment: add the application schema named balance
+                  sql: | 
+                        GRANT ALL ON Table users TO backend;
+                  stripComments: false

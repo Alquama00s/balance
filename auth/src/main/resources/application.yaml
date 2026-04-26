@@ -1,3 +1,13 @@
 spring:
   application:
     name: auth
+  datasource:
+    url: jdbc:postgresql://localhost:5482/balance
+    username: backend
+    password: jhfui@86786JGHJKI
+
+  jpa:
+    properties:
+      hibernate:
+        default_schema: balance
+
