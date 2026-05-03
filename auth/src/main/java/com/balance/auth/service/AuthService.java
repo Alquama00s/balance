@@ -6,6 +6,7 @@ import com.balance.auth.dto.SignUpRequest;
 import com.balance.auth.dto.SignUpResponse;
 import com.balance.auth.entity.User;
 import com.balance.auth.entity.UserProfile;
+import com.balance.auth.exceptions.DuplicateRecordException;
 import com.balance.auth.exceptions.InvalidCredentials;
 import com.balance.auth.repository.UserProfileRepository;
 import com.balance.auth.repository.UserRepository;
@@ -17,11 +18,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthService {
 
-    private UserRepository userRepository;
+    private UserService userService;
     private UserProfileRepository userProfileRepository;
     @Autowired
-    public void setUserRepository(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public void setUserRepository(UserService userService) {
+        this.userService = userService;
     }
     @Autowired
     public void setUserProfileRepository(UserProfileRepository userProfileRepository) {
@@ -30,12 +31,16 @@ public class AuthService {
 
     @Transactional
     public SignUpResponse signUp(SignUpRequest signUpRequest) {
-
+        var existingUser = userService.findByUsername(signUpRequest.getEmail());
+        if(existingUser.isPresent()){
+            throw new DuplicateRecordException("User","email", signUpRequest.getEmail());
+        }
         var user = new User();
         user.setEmail(signUpRequest.getEmail());
         user.setUsername(signUpRequest.getEmail());
         user.setPasswordHash(hashPassword(signUpRequest.getPassword()));
-        user = userRepository.save(user);
+        user.setCreatedBy(userService.getAdminUser().getId());
+        user = userService.save(user);
 
         UserProfile userProfile = new UserProfile();
         userProfile.setFirstName(signUpRequest.getFirstName());
@@ -52,7 +57,7 @@ public class AuthService {
     }
 
     public LoginResponse login(LoginRequest loginRequest) {
-        var user = userRepository.findByUsername(loginRequest.getUsername()).orElseThrow();
+        var user = userService.findByUsername(loginRequest.getUsername()).orElseThrow();
         if (checkPassword(loginRequest.getPassword(), user.getPasswordHash())) {
             var loginRes = new LoginResponse();
             loginRes.setToken("dummy-token");

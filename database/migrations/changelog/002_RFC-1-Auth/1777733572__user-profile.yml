@@ -39,6 +39,5 @@ databaseChangeLog:
       - sql:
           comment: add the application schema named balance
           sql: | 
-                GRANT ALL ON Table roles TO backend;
-                GRANT ALL ON Table user_role TO backend;
+                GRANT ALL ON Table user_profile TO backend;
           stripComments: false
