@@ -30,6 +30,10 @@ databaseChangeLog:
                 name: phone_e164
                 type: varchar(20)
             - column:
+                name: phone_verified
+                type: bool
+                defaultValueBoolean: false
+            - column:
                 name: avatar_url
                 type: text
       - sql:

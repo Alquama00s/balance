@@ -27,6 +27,10 @@ databaseChangeLog:
                             nullable: false
                             unique: true
                   - column:
+                        name: email_verified
+                        type: bool
+                        defaultValueBoolean: false
+                  - column:
                         name: password_hash
                         type: varchar(255)
                         constraints:
