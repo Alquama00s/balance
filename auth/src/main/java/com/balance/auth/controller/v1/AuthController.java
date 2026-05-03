@@ -1,5 +1,7 @@
 package com.balance.auth.controller.v1;
 
+import com.balance.auth.dto.LoginRequest;
+import com.balance.auth.dto.LoginResponse;
 import com.balance.auth.dto.SignUpRequest;
 import com.balance.auth.dto.SignUpResponse;
 import com.balance.auth.service.AuthService;
@@ -23,5 +25,11 @@ public class AuthController {
     public SignUpResponse signUp(SignUpRequest signUpRequest) {
         return authService.signUp(signUpRequest);
     }
+
+    @PostMapping("/login")
+    public LoginResponse signUp(LoginRequest loginRequest) {
+        return authService.login(loginRequest);
+    }
+
 
 }
