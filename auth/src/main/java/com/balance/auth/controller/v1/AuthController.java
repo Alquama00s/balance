@@ -5,6 +5,7 @@ import com.balance.auth.dto.LoginResponse;
 import com.balance.auth.dto.SignUpRequest;
 import com.balance.auth.dto.SignUpResponse;
 import com.balance.auth.service.AuthService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,12 +25,12 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public SignUpResponse signUp(@RequestBody SignUpRequest signUpRequest) {
+    public SignUpResponse signUp(@RequestBody @Valid SignUpRequest signUpRequest) {
         return authService.signUp(signUpRequest);
     }
 
     @PostMapping("/login")
-    public LoginResponse login(@RequestBody LoginRequest loginRequest) {
+    public LoginResponse login(@RequestBody @Valid LoginRequest loginRequest) {
         return authService.login(loginRequest);
     }
 

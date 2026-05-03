@@ -7,12 +7,12 @@ import lombok.Data;
 
 @Data
 public class SignUpRequest {
-    @NotBlank
+    @NotBlank(message = "Username must be valid")
     private String firstName;
     private String lastName;
     @Email
     private String email;
-    @Size(min = 6)
+    @Size(min = 6,message = "Password must be at least 6 characters long")
     private String password;
     private String phoneNumber;
 }

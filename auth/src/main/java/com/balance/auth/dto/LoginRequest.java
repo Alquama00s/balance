@@ -7,9 +7,9 @@ import lombok.Data;
 
 @Data
 public class LoginRequest {
-    @NotBlank
+    @NotBlank(message = "Username must be valid")
     String username;
     @NotNull
-    @Size(min = 6)
+    @Size(min = 6,message = "invalid password")
     String password;
 }
