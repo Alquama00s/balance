@@ -10,6 +10,7 @@ import com.balance.auth.exceptions.DuplicateRecordException;
 import com.balance.auth.exceptions.InvalidCredentials;
 import com.balance.auth.repository.UserProfileRepository;
 import com.balance.auth.repository.UserRepository;
+import com.nimbusds.jose.JOSEException;
 import jakarta.transaction.Transactional;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,11 @@ public class AuthService {
 
     private UserService userService;
     private UserProfileRepository userProfileRepository;
+
+
+
+    private JWTService jwtService;
+
     @Autowired
     public void setUserRepository(UserService userService) {
         this.userService = userService;
@@ -28,6 +34,11 @@ public class AuthService {
     public void setUserProfileRepository(UserProfileRepository userProfileRepository) {
         this.userProfileRepository = userProfileRepository;
     }
+    @Autowired
+    public void setJwtService(JWTService jwtService) {
+        this.jwtService = jwtService;
+    }
+
 
     @Transactional
     public SignUpResponse signUp(SignUpRequest signUpRequest) {
@@ -56,11 +67,11 @@ public class AuthService {
         return signUpRes;
     }
 
-    public LoginResponse login(LoginRequest loginRequest) {
+    public LoginResponse login(LoginRequest loginRequest) throws JOSEException {
         var user = userService.findByUsername(loginRequest.getUsername()).orElseThrow();
         if (checkPassword(loginRequest.getPassword(), user.getPasswordHash())) {
             var loginRes = new LoginResponse();
-            loginRes.setToken("dummy-token");
+            loginRes.setToken(jwtService.generateToken(user));
             return loginRes;
         } else {
             throw new InvalidCredentials();

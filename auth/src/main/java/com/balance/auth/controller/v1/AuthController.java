@@ -5,6 +5,7 @@ import com.balance.auth.dto.LoginResponse;
 import com.balance.auth.dto.SignUpRequest;
 import com.balance.auth.dto.SignUpResponse;
 import com.balance.auth.service.AuthService;
+import com.nimbusds.jose.JOSEException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,7 +31,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public LoginResponse login(@RequestBody @Valid LoginRequest loginRequest) {
+    public LoginResponse login(@RequestBody @Valid LoginRequest loginRequest) throws JOSEException {
         return authService.login(loginRequest);
     }
 
