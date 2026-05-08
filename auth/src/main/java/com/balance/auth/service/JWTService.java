@@ -1,7 +1,6 @@
 package com.balance.auth.service;
 
 import com.balance.auth.entity.User;
-import com.balance.auth.utills.JWTUtill;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;
