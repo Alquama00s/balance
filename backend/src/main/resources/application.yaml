@@ -1,3 +1,13 @@
+server:
+    port: 8090
+
 spring:
   application:
     name: backend
+
+
+jwt:
+  # Change this secret to a secure random value for production. Must be long enough for HS256.
+  secret: changeitchangeitchangeitchangeit123456
+  expiration-ms: 3600000
+

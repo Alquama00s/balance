@@ -16,3 +16,8 @@ databaseChangeLog:
       #           autoIncrement: true
       #           constraints:
       #             primaryKey: true
+          - sql:
+            comment: add the application schema named balance
+            sql: | 
+                  GRANT ALL ON Table users TO backend;
+            stripComments: false
