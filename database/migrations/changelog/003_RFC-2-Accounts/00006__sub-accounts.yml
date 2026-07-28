@@ -1,7 +1,7 @@
-# sub-accounts changeset is generated at 2026-07-28 07:02:19 UTC
+# sub-accounts changeset is generated at 2026-07-28 08:15:56 UTC
 databaseChangeLog:
 - changeSet:
-    id: sub-accounts-1785222139
+    id: sub-accounts-1785226556
     author: Alquama
     changes:
       - createTable:
@@ -41,18 +41,18 @@ databaseChangeLog:
             - column:
                 name: opening_balance
                 type: numeric(19,4)
-                defaultValue: 0
+                defaultValueNumeric: 0
                 constraints:
                   nullable: false
             - column:
                 name: current_balance
                 type: numeric(19,4)
-                defaultValue: 0
+                defaultValueNumeric: 0
                 constraints:
                   nullable: false
             - column:
                 name: is_archived
-                type: bool
+                type: boolean
                 defaultValueBoolean: false
                 constraints:
                   nullable: false
@@ -68,44 +68,7 @@ databaseChangeLog:
             - column:
                 name: updated_at
                 type: timestamp
-      - addForeignKeyConstraint:
-          baseTableName: sub_accounts
-          baseColumnNames: parent_account_id
-          referencedTableName: accounts
-          referencedColumnNames: id
-          constraintName: fk_sub_accounts_accounts
-      - addForeignKeyConstraint:
-          baseTableName: sub_accounts
-          baseColumnNames: account_type_id
-          referencedTableName: account_types
-          referencedColumnNames: id
-          constraintName: fk_sub_accounts_account_types
-      - addForeignKeyConstraint:
-          baseTableName: sub_accounts
-          baseColumnNames: currency_code
-          referencedTableName: currencies
-          referencedColumnNames: code
-          constraintName: fk_sub_accounts_currencies
-      - createIndex:
-          indexName: idx_sub_accounts_parent_account_id
-          tableName: sub_accounts
-          columns:
-            - column:
-                name: parent_account_id
-      - createIndex:
-          indexName: idx_sub_accounts_account_type_id
-          tableName: sub_accounts
-          columns:
-            - column:
-                name: account_type_id
-      - createIndex:
-          indexName: idx_sub_accounts_currency_code
-          tableName: sub_accounts
-          columns:
-            - column:
-                name: currency_code
       - sql:
           comment: Grant permissions on sub_accounts table
-          sql: |
-            GRANT ALL ON TABLE sub_accounts TO backend;
+          sql: GRANT ALL ON TABLE sub_accounts TO backend;
           stripComments: false

@@ -1,0 +1,44 @@
+# transfers changeset is generated at 2026-07-28 08:15:56 UTC
+databaseChangeLog:
+- changeSet:
+    id: transfers-1785226556
+    author: Alquama
+    changes:
+      - createTable:
+          ifNotExists: true
+          tableName: transfers
+          columns:
+            - column:
+                name: id
+                type: uuid
+                defaultValueComputed: uuidv7()
+                constraints:
+                  primaryKey: true
+                  nullable: false
+            - column:
+                name: from_sub_account_id
+                type: uuid
+                constraints:
+                  nullable: false
+            - column:
+                name: to_sub_account_id
+                type: uuid
+                constraints:
+                  nullable: false
+            - column:
+                name: amount
+                type: numeric(19,4)
+                constraints:
+                  nullable: false
+            - column:
+                name: transfer_time
+                type: timestamp
+                constraints:
+                  nullable: false
+            - column:
+                name: note
+                type: text
+      - sql:
+          comment: Grant permissions on transfers table
+          sql: GRANT ALL ON TABLE transfers TO backend;
+          stripComments: false

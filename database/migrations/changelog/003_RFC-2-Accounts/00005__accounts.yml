@@ -1,7 +1,7 @@
-# accounts changeset is generated at 2026-07-28 07:02:19 UTC
+# accounts changeset is generated at 2026-07-28 08:15:56 UTC
 databaseChangeLog:
 - changeSet:
-    id: accounts-1785222139
+    id: accounts-1785226556
     author: Alquama
     changes:
       - createTable:
@@ -30,7 +30,7 @@ databaseChangeLog:
                 type: text
             - column:
                 name: is_archived
-                type: bool
+                type: boolean
                 defaultValueBoolean: false
                 constraints:
                   nullable: false
@@ -43,14 +43,7 @@ databaseChangeLog:
             - column:
                 name: updated_at
                 type: timestamp
-      - addForeignKeyConstraint:
-          baseTableName: accounts
-          baseColumnNames: owner_id
-          referencedTableName: users
-          referencedColumnNames: id
-          constraintName: fk_accounts_users
       - sql:
           comment: Grant permissions on accounts table
-          sql: |
-            GRANT ALL ON TABLE accounts TO backend;
+          sql: GRANT ALL ON TABLE accounts TO backend;
           stripComments: false

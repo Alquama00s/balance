@@ -1,7 +1,7 @@
-# account-types changeset is generated at 2026-07-28 07:02:19 UTC
+# account-types changeset is generated at 2026-07-28 08:15:56 UTC
 databaseChangeLog:
 - changeSet:
-    id: account-types-1785222139
+    id: account-types-1785226556
     author: Alquama
     changes:
       - createTable:
@@ -27,6 +27,5 @@ databaseChangeLog:
                   nullable: false
       - sql:
           comment: Grant permissions on account_types table
-          sql: |
-            GRANT ALL ON TABLE account_types TO backend;
+          sql: GRANT ALL ON TABLE account_types TO backend;
           stripComments: false

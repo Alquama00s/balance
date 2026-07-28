@@ -1,20 +1,11 @@
 databaseChangeLog:
   - changeSet:
-      id: add-audit-columns-goals
+      id: add-audit-columns-transactions
       author: alquama
       changes:
         - addColumn:
-            tableName: goals
+            tableName: transactions
             columns:
-              - column:
-                  name: created_at
-                  type: timestamp
-                  defaultValueComputed: CURRENT_TIMESTAMP
-                  constraints:
-                    nullable: false
-              - column:
-                  name: updated_at
-                  type: timestamp
               - column:
                   name: deleted_at
                   type: timestamp

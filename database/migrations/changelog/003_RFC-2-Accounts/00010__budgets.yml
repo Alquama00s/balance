@@ -1,7 +1,7 @@
-# budgets changeset is generated at 2026-07-28 07:02:19 UTC
+# budgets changeset is generated at 2026-07-28 08:15:56 UTC
 databaseChangeLog:
 - changeSet:
-    id: budgets-1785222139
+    id: budgets-1785226556
     author: Alquama
     changes:
       - createTable:
@@ -51,36 +51,7 @@ databaseChangeLog:
                 defaultValueComputed: CURRENT_TIMESTAMP
                 constraints:
                   nullable: false
-      - addForeignKeyConstraint:
-          baseTableName: budgets
-          baseColumnNames: category_id
-          referencedTableName: categories
-          referencedColumnNames: id
-          constraintName: fk_budgets_categories
-      - addForeignKeyConstraint:
-          baseTableName: budgets
-          baseColumnNames: currency_code
-          referencedTableName: currencies
-          referencedColumnNames: code
-          constraintName: fk_budgets_currencies
-      - createIndex:
-          indexName: idx_budgets_category_id
-          tableName: budgets
-          columns:
-            - column:
-                name: category_id
-      - createIndex:
-          indexName: idx_budgets_category_dates
-          tableName: budgets
-          columns:
-            - column:
-                name: category_id
-            - column:
-                name: start_date
-            - column:
-                name: end_date
       - sql:
           comment: Grant permissions on budgets table
-          sql: |
-            GRANT ALL ON TABLE budgets TO backend;
+          sql: GRANT ALL ON TABLE budgets TO backend;
           stripComments: false

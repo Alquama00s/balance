@@ -1,7 +1,7 @@
-# recurring-transactions changeset is generated at 2026-07-28 07:02:19 UTC
+# recurring-transactions changeset is generated at 2026-07-28 08:15:56 UTC
 databaseChangeLog:
 - changeSet:
-    id: recurring-transactions-1785222139
+    id: recurring-transactions-1785226556
     author: Alquama
     changes:
       - createTable:
@@ -56,42 +56,11 @@ databaseChangeLog:
                   nullable: false
             - column:
                 name: active
-                type: bool
+                type: boolean
                 defaultValueBoolean: true
                 constraints:
                   nullable: false
-      - addForeignKeyConstraint:
-          baseTableName: recurring_transactions
-          baseColumnNames: sub_account_id
-          referencedTableName: sub_accounts
-          referencedColumnNames: id
-          constraintName: fk_recurring_transactions_sub_accounts
-      - addForeignKeyConstraint:
-          baseTableName: recurring_transactions
-          baseColumnNames: category_id
-          referencedTableName: categories
-          referencedColumnNames: id
-          constraintName: fk_recurring_transactions_categories
-      - createIndex:
-          indexName: idx_recurring_transactions_active
-          tableName: recurring_transactions
-          columns:
-            - column:
-                name: active
-      - createIndex:
-          indexName: idx_recurring_transactions_next_execution
-          tableName: recurring_transactions
-          columns:
-            - column:
-                name: next_execution_at
-      - createIndex:
-          indexName: idx_recurring_transactions_sub_account_id
-          tableName: recurring_transactions
-          columns:
-            - column:
-                name: sub_account_id
       - sql:
           comment: Grant permissions on recurring_transactions table
-          sql: |
-            GRANT ALL ON TABLE recurring_transactions TO backend;
+          sql: GRANT ALL ON TABLE recurring_transactions TO backend;
           stripComments: false

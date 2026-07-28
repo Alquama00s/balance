@@ -1,7 +1,7 @@
-# categories changeset is generated at 2026-07-28 07:02:19 UTC
+# categories changeset is generated at 2026-07-28 08:15:56 UTC
 databaseChangeLog:
 - changeSet:
-    id: categories-1785222139
+    id: categories-1785226556
     author: Alquama
     changes:
       - createTable:
@@ -26,26 +26,7 @@ databaseChangeLog:
             - column:
                 name: category_type
                 type: varchar(50)
-      - addForeignKeyConstraint:
-          baseTableName: categories
-          baseColumnNames: parent_category_id
-          referencedTableName: categories
-          referencedColumnNames: id
-          constraintName: fk_categories_self
-      - createIndex:
-          indexName: idx_categories_parent_category_id
-          tableName: categories
-          columns:
-            - column:
-                name: parent_category_id
-      - createIndex:
-          indexName: idx_categories_category_type
-          tableName: categories
-          columns:
-            - column:
-                name: category_type
       - sql:
           comment: Grant permissions on categories table
-          sql: |
-            GRANT ALL ON TABLE categories TO backend;
+          sql: GRANT ALL ON TABLE categories TO backend;
           stripComments: false

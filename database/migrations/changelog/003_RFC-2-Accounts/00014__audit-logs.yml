@@ -1,7 +1,7 @@
-# audit-logs changeset is generated at 2026-07-28 07:02:19 UTC
+# audit-logs changeset is generated at 2026-07-28 08:15:56 UTC
 databaseChangeLog:
 - changeSet:
-    id: audit-logs-1785222139
+    id: audit-logs-1785226556
     author: Alquama
     changes:
       - createTable:
@@ -17,7 +17,7 @@ databaseChangeLog:
                   nullable: false
             - column:
                 name: entity_type
-                type: varchar(255)
+                type: varchar(100)
                 constraints:
                   nullable: false
             - column:
@@ -42,22 +42,7 @@ databaseChangeLog:
                 defaultValueComputed: CURRENT_TIMESTAMP
                 constraints:
                   nullable: false
-      - createIndex:
-          indexName: idx_audit_logs_created_at
-          tableName: audit_logs
-          columns:
-            - column:
-                name: created_at
-      - createIndex:
-          indexName: idx_audit_logs_entity
-          tableName: audit_logs
-          columns:
-            - column:
-                name: entity_type
-            - column:
-                name: entity_id
       - sql:
           comment: Grant permissions on audit_logs table
-          sql: |
-            GRANT ALL ON TABLE audit_logs TO backend;
+          sql: GRANT ALL ON TABLE audit_logs TO backend;
           stripComments: false

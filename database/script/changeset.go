@@ -21,20 +21,21 @@ const (
 )
 
 func main() {
-	if len(os.Args) < 4 {
-		fmt.Println("Usage: go run changeset.go <feature-name> <changeset-name> <template-name> [var1=value1] [var2=value2] ...")
+	if len(os.Args) < 5 {
+		fmt.Println("Usage: go run changeset.go <feature-name> <order> <changeset-name> <template-name> [var1=value1] [var2=value2] ...")
 		fmt.Println("\nExample:")
-		fmt.Println("  go run changeset.go RFC-2-Accounts currencies changeset-default.yml.tmpl tableName=currencies")
+		fmt.Println("  go run changeset.go RFC-2-Accounts 1 currencies changeset-default.yml.tmpl tableName=currencies")
 		os.Exit(1)
 	}
 
 	featureInput := os.Args[1]
-	changesetName := sanitizeForPath(os.Args[2])
-	templateName := os.Args[3]
+	orderStr := os.Args[2]
+	changesetName := sanitizeForPath(os.Args[3])
+	templateName := os.Args[4]
 
 	// ── Parse additional key=value arguments ─────────────────────────────
 	customVars := make(map[string]string)
-	for i := 4; i < len(os.Args); i++ {
+	for i := 5; i < len(os.Args); i++ {
 		parts := strings.SplitN(os.Args[i], "=", 2)
 		if len(parts) == 2 {
 			customVars[parts[0]] = parts[1]
@@ -55,6 +56,13 @@ func main() {
 		status = "Creating new"
 	}
 	fmt.Printf("→ %s feature: %s\n", status, featureFolderName)
+
+	// ── Validate order parameter ───────────────────────────────────────
+	order, err := strconv.Atoi(orderStr)
+	if err != nil || order <= 0 {
+		fmt.Printf("Error: Order must be a positive integer, got '%s'\n", orderStr)
+		os.Exit(1)
+	}
 
 	// ── Resolve template ─────────────────────────────────────────────────
 	selectedTemplate := filepath.Join(TEMPLATES_DIR, templateName)
@@ -84,6 +92,7 @@ func main() {
 		"_featureFolderName": featureFolderName,
 		"_featureName":       featureInput,
 		"_changesetName":     changesetName,
+		"_order":             fmt.Sprintf("%05d", order),
 		"_unixtimestamp":     strconv.FormatInt(unixTimestamp, 10),
 		"_author":            author,
 		"_generatedAt":       time.Now().UTC().Format("2006-01-02 15:04:05 UTC"),
@@ -112,12 +121,18 @@ func main() {
 	}
 
 	// ── Create target filename and path ─────────────────────────────────
-	filename := fmt.Sprintf("%d__%s.yml", unixTimestamp, changesetName)
+	filename := fmt.Sprintf("%05d__%s.yml", order, changesetName)
 	fullPath := filepath.Join(dirPath, filename)
 
 	// Duplicate check
 	if existing, _ := findChangesetWithSameName(dirPath, changesetName); existing != "" {
 		fmt.Printf("\nERROR: Changeset with this name already exists:\n→ %s\n", filepath.Base(existing))
+		os.Exit(1)
+	}
+
+	// Check for order collision
+	if existingOrder, _ := findChangesetWithSameOrder(dirPath, order); existingOrder != "" {
+		fmt.Printf("\nERROR: Changeset with order %05d already exists:\n→ %s\n", order, filepath.Base(existingOrder))
 		os.Exit(1)
 	}
 
@@ -266,6 +281,25 @@ func findChangesetWithSameName(dir, changesetName string) (string, error) {
 		}
 		name := entry.Name()
 		if strings.HasSuffix(name, suffix) {
+			return filepath.Join(dir, name), nil
+		}
+	}
+	return "", nil
+}
+
+func findChangesetWithSameOrder(dir string, order int) (string, error) {
+	entries, err := os.ReadDir(dir)
+	if err != nil {
+		return "", err
+	}
+
+	prefix := fmt.Sprintf("%05d__", order)
+	for _, entry := range entries {
+		if entry.IsDir() {
+			continue
+		}
+		name := entry.Name()
+		if strings.HasPrefix(name, prefix) && strings.HasSuffix(name, ".yml") {
 			return filepath.Join(dir, name), nil
 		}
 	}

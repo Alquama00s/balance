@@ -1,7 +1,7 @@
-# goals changeset is generated at 2026-07-28 07:02:19 UTC
+# goals changeset is generated at 2026-07-28 08:15:56 UTC
 databaseChangeLog:
 - changeSet:
-    id: goals-1785222139
+    id: goals-1785226556
     author: Alquama
     changes:
       - createTable:
@@ -38,17 +38,15 @@ databaseChangeLog:
             - column:
                 name: current_amount
                 type: numeric(19,4)
-                defaultValue: 0
+                defaultValueNumeric: 0
                 constraints:
                   nullable: false
             - column:
                 name: target_date
                 type: date
-                constraints:
-                  nullable: false
             - column:
                 name: completed
-                type: bool
+                type: boolean
                 defaultValueBoolean: false
                 constraints:
                   nullable: false
@@ -58,32 +56,7 @@ databaseChangeLog:
                 defaultValueComputed: CURRENT_TIMESTAMP
                 constraints:
                   nullable: false
-      - addForeignKeyConstraint:
-          baseTableName: goals
-          baseColumnNames: sub_account_id
-          referencedTableName: sub_accounts
-          referencedColumnNames: id
-          constraintName: fk_goals_sub_accounts
-      - addForeignKeyConstraint:
-          baseTableName: goals
-          baseColumnNames: currency_code
-          referencedTableName: currencies
-          referencedColumnNames: code
-          constraintName: fk_goals_currencies
-      - createIndex:
-          indexName: idx_goals_sub_account_id
-          tableName: goals
-          columns:
-            - column:
-                name: sub_account_id
-      - createIndex:
-          indexName: idx_goals_completed
-          tableName: goals
-          columns:
-            - column:
-                name: completed
       - sql:
           comment: Grant permissions on goals table
-          sql: |
-            GRANT ALL ON TABLE goals TO backend;
+          sql: GRANT ALL ON TABLE goals TO backend;
           stripComments: false

@@ -1,20 +1,11 @@
 databaseChangeLog:
   - changeSet:
-      id: add-audit-columns-recurring_transactions
+      id: add-audit-columns-sub_accounts
       author: alquama
       changes:
         - addColumn:
-            tableName: recurring_transactions
+            tableName: sub_accounts
             columns:
-              - column:
-                  name: created_at
-                  type: timestamp
-                  defaultValueComputed: CURRENT_TIMESTAMP
-                  constraints:
-                    nullable: false
-              - column:
-                  name: updated_at
-                  type: timestamp
               - column:
                   name: deleted_at
                   type: timestamp

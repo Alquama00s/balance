@@ -1,0 +1,28 @@
+# sub-account-tags changeset is generated at 2026-07-28 08:15:56 UTC
+databaseChangeLog:
+- changeSet:
+    id: sub-account-tags-1785226556
+    author: Alquama
+    changes:
+      - createTable:
+          ifNotExists: true
+          tableName: sub_account_tags
+          columns:
+            - column:
+                name: sub_account_id
+                type: uuid
+                constraints:
+                  nullable: false
+            - column:
+                name: tag_id
+                type: uuid
+                constraints:
+                  nullable: false
+      - addUniqueConstraint:
+          tableName: sub_account_tags
+          columnNames: sub_account_id,tag_id
+          constraintName: uk_sub_account_tags
+      - sql:
+          comment: Grant permissions on sub_account_tags table
+          sql: GRANT ALL ON TABLE sub_account_tags TO backend;
+          stripComments: false

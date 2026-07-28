@@ -1,0 +1,187 @@
+# create-indexes changeset is generated at 2026-07-28 08:16:07 UTC
+databaseChangeLog:
+- changeSet:
+    id: create-indexes-1785226567
+    author: Alquama
+    changes:
+      # ACCOUNTS indexes
+      - createIndex:
+          tableName: accounts
+          indexName: idx_accounts_owner_id
+          columns:
+            - column:
+                name: owner_id
+      - createIndex:
+          tableName: accounts
+          indexName: idx_accounts_owner_id_archived
+          columns:
+            - column:
+                name: owner_id
+            - column:
+                name: is_archived
+
+      # SUB_ACCOUNTS indexes
+      - createIndex:
+          tableName: sub_accounts
+          indexName: idx_sub_accounts_parent_account_id
+          columns:
+            - column:
+                name: parent_account_id
+      - createIndex:
+          tableName: sub_accounts
+          indexName: idx_sub_accounts_account_type_id
+          columns:
+            - column:
+                name: account_type_id
+      - createIndex:
+          tableName: sub_accounts
+          indexName: idx_sub_accounts_currency_code
+          columns:
+            - column:
+                name: currency_code
+      - createIndex:
+          tableName: sub_accounts
+          indexName: idx_sub_accounts_parent_archived
+          columns:
+            - column:
+                name: parent_account_id
+            - column:
+                name: is_archived
+
+      # CATEGORIES indexes
+      - createIndex:
+          tableName: categories
+          indexName: idx_categories_parent_category_id
+          columns:
+            - column:
+                name: parent_category_id
+
+      # TRANSACTIONS indexes (for ledger queries)
+      - createIndex:
+          tableName: transactions
+          indexName: idx_transactions_sub_account_id
+          columns:
+            - column:
+                name: sub_account_id
+      - createIndex:
+          tableName: transactions
+          indexName: idx_transactions_sub_account_time
+          columns:
+            - column:
+                name: sub_account_id
+            - column:
+                name: transaction_time
+      - createIndex:
+          tableName: transactions
+          indexName: idx_transactions_category_id
+          columns:
+            - column:
+                name: category_id
+
+      # TRANSFERS indexes
+      - createIndex:
+          tableName: transfers
+          indexName: idx_transfers_from_sub_account_id
+          columns:
+            - column:
+                name: from_sub_account_id
+      - createIndex:
+          tableName: transfers
+          indexName: idx_transfers_to_sub_account_id
+          columns:
+            - column:
+                name: to_sub_account_id
+      - createIndex:
+          tableName: transfers
+          indexName: idx_transfers_transfer_time
+          columns:
+            - column:
+                name: transfer_time
+
+      # BUDGETS indexes
+      - createIndex:
+          tableName: budgets
+          indexName: idx_budgets_category_id
+          columns:
+            - column:
+                name: category_id
+      - createIndex:
+          tableName: budgets
+          indexName: idx_budgets_category_dates
+          columns:
+            - column:
+                name: category_id
+            - column:
+                name: start_date
+            - column:
+                name: end_date
+
+      # GOALS indexes
+      - createIndex:
+          tableName: goals
+          indexName: idx_goals_sub_account_id
+          columns:
+            - column:
+                name: sub_account_id
+      - createIndex:
+          tableName: goals
+          indexName: idx_goals_currency_code
+          columns:
+            - column:
+                name: currency_code
+      - createIndex:
+          tableName: goals
+          indexName: idx_goals_completed
+          columns:
+            - column:
+                name: completed
+
+      # RECURRING_TRANSACTIONS indexes (for scheduler queries)
+      - createIndex:
+          tableName: recurring_transactions
+          indexName: idx_recurring_transactions_active
+          columns:
+            - column:
+                name: active
+      - createIndex:
+          tableName: recurring_transactions
+          indexName: idx_recurring_transactions_next_execution
+          columns:
+            - column:
+                name: next_execution_at
+      - createIndex:
+          tableName: recurring_transactions
+          indexName: idx_recurring_transactions_sub_account_id
+          columns:
+            - column:
+                name: sub_account_id
+
+      # SUB_ACCOUNT_TAGS indexes
+      - createIndex:
+          tableName: sub_account_tags
+          indexName: idx_sub_account_tags_sub_account_id
+          columns:
+            - column:
+                name: sub_account_id
+      - createIndex:
+          tableName: sub_account_tags
+          indexName: idx_sub_account_tags_tag_id
+          columns:
+            - column:
+                name: tag_id
+
+      # AUDIT_LOGS indexes
+      - createIndex:
+          tableName: audit_logs
+          indexName: idx_audit_logs_created_at
+          columns:
+            - column:
+                name: created_at
+      - createIndex:
+          tableName: audit_logs
+          indexName: idx_audit_logs_entity
+          columns:
+            - column:
+                name: entity_type
+            - column:
+                name: entity_id

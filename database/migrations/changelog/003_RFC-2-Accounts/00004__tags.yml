@@ -1,7 +1,7 @@
-# tags changeset is generated at 2026-07-28 07:02:19 UTC
+# tags changeset is generated at 2026-07-28 08:15:56 UTC
 databaseChangeLog:
 - changeSet:
-    id: tags-1785222139
+    id: tags-1785226556
     author: Alquama
     changes:
       - createTable:
@@ -26,6 +26,5 @@ databaseChangeLog:
                 type: text
       - sql:
           comment: Grant permissions on tags table
-          sql: |
-            GRANT ALL ON TABLE tags TO backend;
+          sql: GRANT ALL ON TABLE tags TO backend;
           stripComments: false

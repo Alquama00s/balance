@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-audit-columns-transfers
+      author: alquama
+      changes:
+        - addColumn:
+            tableName: audit_logs
+            columns:
+              - column:
+                  name: created_by
+                  type: uuid

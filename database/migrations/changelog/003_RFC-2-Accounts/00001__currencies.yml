@@ -1,7 +1,7 @@
-# currencies changeset is generated at 2026-07-28 07:02:02 UTC
+# currencies changeset is generated at 2026-07-28 08:15:42 UTC
 databaseChangeLog:
 - changeSet:
-    id: currencies-1785222122
+    id: currencies-1785226542
     author: Alquama
     changes:
       - createTable:
@@ -21,7 +21,7 @@ databaseChangeLog:
                   nullable: false
             - column:
                 name: symbol
-                type: varchar(10)
+                type: varchar(5)
                 constraints:
                   nullable: false
             - column:
@@ -31,6 +31,5 @@ databaseChangeLog:
                   nullable: false
       - sql:
           comment: Grant permissions on currencies table
-          sql: |
-            GRANT ALL ON TABLE currencies TO backend;
+          sql: GRANT ALL ON TABLE currencies TO backend;
           stripComments: false

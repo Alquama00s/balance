@@ -1,0 +1,176 @@
+# add-fk changeset is generated at 2026-07-28 08:16:07 UTC
+databaseChangeLog:
+- changeSet:
+    id: add-fk-1785226567
+    author: Alquama
+    changes:
+      # accounts.owner_id -> users.id
+      - addForeignKeyConstraint:
+          baseTableName: accounts
+          baseColumnNames: owner_id
+          referencedTableName: users
+          referencedColumnNames: id
+          constraintName: fk_accounts_owner_id
+          onUpdate: RESTRICT
+
+      # sub_accounts.parent_account_id -> accounts.id (NO ACTION for ledger data)
+      - addForeignKeyConstraint:
+          baseTableName: sub_accounts
+          baseColumnNames: parent_account_id
+          referencedTableName: accounts
+          referencedColumnNames: id
+          constraintName: fk_sub_accounts_parent_account_id
+          onUpdate: RESTRICT
+          onDelete: NO ACTION
+
+      # sub_accounts.account_type_id -> account_types.id
+      - addForeignKeyConstraint:
+          baseTableName: sub_accounts
+          baseColumnNames: account_type_id
+          referencedTableName: account_types
+          referencedColumnNames: id
+          constraintName: fk_sub_accounts_account_type_id
+          onUpdate: RESTRICT
+
+      # sub_accounts.currency_code -> currencies.code
+      - addForeignKeyConstraint:
+          baseTableName: sub_accounts
+          baseColumnNames: currency_code
+          referencedTableName: currencies
+          referencedColumnNames: code
+          constraintName: fk_sub_accounts_currency_code
+          onUpdate: RESTRICT
+
+      # account_balances.sub_account_id -> sub_accounts.id (NO ACTION for ledger data)
+      - addForeignKeyConstraint:
+          baseTableName: account_balances
+          baseColumnNames: sub_account_id
+          referencedTableName: sub_accounts
+          referencedColumnNames: id
+          constraintName: fk_account_balances_sub_account_id
+          onUpdate: RESTRICT
+          onDelete: NO ACTION
+
+      # transactions.sub_account_id -> sub_accounts.id (NO ACTION for immutable ledger)
+      - addForeignKeyConstraint:
+          baseTableName: transactions
+          baseColumnNames: sub_account_id
+          referencedTableName: sub_accounts
+          referencedColumnNames: id
+          constraintName: fk_transactions_sub_account_id
+          onUpdate: RESTRICT
+          onDelete: NO ACTION
+
+      # transactions.category_id -> categories.id (nullable)
+      - addForeignKeyConstraint:
+          baseTableName: transactions
+          baseColumnNames: category_id
+          referencedTableName: categories
+          referencedColumnNames: id
+          constraintName: fk_transactions_category_id
+          onUpdate: RESTRICT
+
+      # categories.parent_category_id -> categories.id (self-referencing, NO ACTION)
+      - addForeignKeyConstraint:
+          baseTableName: categories
+          baseColumnNames: parent_category_id
+          referencedTableName: categories
+          referencedColumnNames: id
+          constraintName: fk_categories_parent_category_id
+          onUpdate: RESTRICT
+          onDelete: NO ACTION
+
+      # transfers.from_sub_account_id -> sub_accounts.id (NO ACTION for ledger)
+      - addForeignKeyConstraint:
+          baseTableName: transfers
+          baseColumnNames: from_sub_account_id
+          referencedTableName: sub_accounts
+          referencedColumnNames: id
+          constraintName: fk_transfers_from_sub_account_id
+          onUpdate: RESTRICT
+          onDelete: NO ACTION
+
+      # transfers.to_sub_account_id -> sub_accounts.id (NO ACTION for ledger)
+      - addForeignKeyConstraint:
+          baseTableName: transfers
+          baseColumnNames: to_sub_account_id
+          referencedTableName: sub_accounts
+          referencedColumnNames: id
+          constraintName: fk_transfers_to_sub_account_id
+          onUpdate: RESTRICT
+          onDelete: NO ACTION
+
+      # budgets.category_id -> categories.id
+      - addForeignKeyConstraint:
+          baseTableName: budgets
+          baseColumnNames: category_id
+          referencedTableName: categories
+          referencedColumnNames: id
+          constraintName: fk_budgets_category_id
+          onUpdate: RESTRICT
+
+      # budgets.currency_code -> currencies.code
+      - addForeignKeyConstraint:
+          baseTableName: budgets
+          baseColumnNames: currency_code
+          referencedTableName: currencies
+          referencedColumnNames: code
+          constraintName: fk_budgets_currency_code
+          onUpdate: RESTRICT
+
+      # goals.sub_account_id -> sub_accounts.id (NO ACTION for ledger)
+      - addForeignKeyConstraint:
+          baseTableName: goals
+          baseColumnNames: sub_account_id
+          referencedTableName: sub_accounts
+          referencedColumnNames: id
+          constraintName: fk_goals_sub_account_id
+          onUpdate: RESTRICT
+          onDelete: NO ACTION
+
+      # goals.currency_code -> currencies.code
+      - addForeignKeyConstraint:
+          baseTableName: goals
+          baseColumnNames: currency_code
+          referencedTableName: currencies
+          referencedColumnNames: code
+          constraintName: fk_goals_currency_code
+          onUpdate: RESTRICT
+
+      # recurring_transactions.sub_account_id -> sub_accounts.id (NO ACTION for ledger)
+      - addForeignKeyConstraint:
+          baseTableName: recurring_transactions
+          baseColumnNames: sub_account_id
+          referencedTableName: sub_accounts
+          referencedColumnNames: id
+          constraintName: fk_recurring_transactions_sub_account_id
+          onUpdate: RESTRICT
+          onDelete: NO ACTION
+
+      # recurring_transactions.category_id -> categories.id (nullable)
+      - addForeignKeyConstraint:
+          baseTableName: recurring_transactions
+          baseColumnNames: category_id
+          referencedTableName: categories
+          referencedColumnNames: id
+          constraintName: fk_recurring_transactions_category_id
+          onUpdate: RESTRICT
+
+      # sub_account_tags.sub_account_id -> sub_accounts.id (NO ACTION for ledger)
+      - addForeignKeyConstraint:
+          baseTableName: sub_account_tags
+          baseColumnNames: sub_account_id
+          referencedTableName: sub_accounts
+          referencedColumnNames: id
+          constraintName: fk_sub_account_tags_sub_account_id
+          onUpdate: RESTRICT
+          onDelete: NO ACTION
+
+      # sub_account_tags.tag_id -> tags.id
+      - addForeignKeyConstraint:
+          baseTableName: sub_account_tags
+          baseColumnNames: tag_id
+          referencedTableName: tags
+          referencedColumnNames: id
+          constraintName: fk_sub_account_tags_tag_id
+          onUpdate: RESTRICT

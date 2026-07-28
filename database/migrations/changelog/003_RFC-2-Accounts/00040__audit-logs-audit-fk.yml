@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - changeSet:
+        id: add-audit-fk-audit_logs
+        author: alquama
+        changes:
+          - addForeignKeyConstraint:
+                baseTableName: audit_logs
+                baseColumnNames: created_by
+                referencedTableName: users
+                referencedColumnNames: id
+                constraintName: created_by_fk_audit_logs
+                onUpdate: RESTRICT
+          - addNotNullConstraint:
+                tableName: users
+                columnName: created_by
+                columnDataType: uuid
+                validate: false
