@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bufio"
 	"bytes"
 	"fmt"
 	"os"
@@ -22,14 +21,27 @@ const (
 )
 
 func main() {
-	if len(os.Args) != 3 {
-		fmt.Println("Usage: go run changeset.go <feature-name> <changeset-name>")
+	if len(os.Args) < 4 {
+		fmt.Println("Usage: go run changeset.go <feature-name> <changeset-name> <template-name> [var1=value1] [var2=value2] ...")
+		fmt.Println("\nExample:")
+		fmt.Println("  go run changeset.go RFC-2-Accounts currencies changeset-default.yml.tmpl tableName=currencies")
 		os.Exit(1)
 	}
 
 	featureInput := os.Args[1]
 	changesetName := sanitizeForPath(os.Args[2])
-	reader := bufio.NewReader(os.Stdin)
+	templateName := os.Args[3]
+
+	// ── Parse additional key=value arguments ─────────────────────────────
+	customVars := make(map[string]string)
+	for i := 4; i < len(os.Args); i++ {
+		parts := strings.SplitN(os.Args[i], "=", 2)
+		if len(parts) == 2 {
+			customVars[parts[0]] = parts[1]
+		} else {
+			fmt.Printf("Warning: Invalid variable format '%s', expected key=value\n", os.Args[i])
+		}
+	}
 
 	// ── Resolve feature folder ──────────────────────────────────────────
 	dirPath, featureFolderName, isNew, err := resolveFeatureFolder(ROOT_PATH, featureInput)
@@ -38,28 +50,20 @@ func main() {
 		os.Exit(1)
 	}
 
-	if !isNew {
-		fmt.Printf("\nFound existing feature: %s\n", featureFolderName)
-		fmt.Print("Add to this feature? [Y/n]: ")
-		answer, _ := reader.ReadString('\n')
-		answer = strings.TrimSpace(strings.ToLower(answer))
-		if answer == "n" || answer == "no" {
-			fmt.Println("Aborted.")
-			os.Exit(0)
-		}
-		fmt.Printf("→ Using existing feature: %s\n", featureFolderName)
-	} else {
-		fmt.Printf("→ Will create new feature folder: %s\n", featureFolderName)
+	status := "Using existing"
+	if isNew {
+		status = "Creating new"
 	}
+	fmt.Printf("→ %s feature: %s\n", status, featureFolderName)
 
-	// ── Select template ─────────────────────────────────────────────────
-	selectedTemplate, err := selectTemplate(reader)
-	if err != nil {
-		fmt.Printf("Template selection failed: %v\n", err)
+	// ── Resolve template ─────────────────────────────────────────────────
+	selectedTemplate := filepath.Join(TEMPLATES_DIR, templateName)
+	if _, err := os.Stat(selectedTemplate); os.IsNotExist(err) {
+		fmt.Printf("Error: Template not found: %s\n", selectedTemplate)
 		os.Exit(1)
 	}
 
-	fmt.Printf("→ Using template: %s\n", filepath.Base(selectedTemplate))
+	fmt.Printf("→ Using template: %s\n", templateName)
 
 	// ── Read template content ───────────────────────────────────────────
 	tmplContentBytes, err := os.ReadFile(selectedTemplate)
@@ -84,26 +88,27 @@ func main() {
 		"_author":            author,
 		"_generatedAt":       time.Now().UTC().Format("2006-01-02 15:04:05 UTC"),
 	}
-	for k, v := range data {
-		println(k + ": " + v)
+
+	// ── Merge custom variables ──────────────────────────────────────────
+	for k, v := range customVars {
+		data[k] = v
 	}
 
-	// ── Prompt for missing variables ────────────────────────────────────
-	fmt.Println("\nPlease provide values for the following variables:")
+	// ── Check for missing required variables ────────────────────────────
+	var missing []string
 	for _, varName := range requiredVars {
-		// Skip already provided variables
-		if _, exists := data[varName]; exists {
-			continue
+		if _, exists := data[varName]; !exists {
+			missing = append(missing, varName)
 		}
+	}
 
-		fmt.Printf("%s: ", varName)
-		value, _ := reader.ReadString('\n')
-		value = strings.TrimSpace(value)
-
-		// You may want to add a default here if value == ""
-		// value = value or "default_value"
-
-		data[varName] = value
+	if len(missing) > 0 {
+		fmt.Printf("Error: Missing required variables: %s\n", strings.Join(missing, ", "))
+		fmt.Println("Required variables from template:")
+		for _, v := range requiredVars {
+			fmt.Printf("  - %s\n", v)
+		}
+		os.Exit(1)
 	}
 
 	// ── Create target filename and path ─────────────────────────────────
@@ -178,64 +183,19 @@ func extractTemplateVariables(content string) []string {
 	return vars
 }
 
-func selectTemplate(reader *bufio.Reader) (string, error) {
+func listAvailableTemplates() {
 	files, err := os.ReadDir(TEMPLATES_DIR)
 	if err != nil {
-		return "", fmt.Errorf("cannot read templates directory %s: %w", TEMPLATES_DIR, err)
+		fmt.Printf("Cannot read templates directory: %v\n", err)
+		return
 	}
 
-	var templates []string
+	fmt.Println("Available templates:")
 	for _, f := range files {
-		if f.IsDir() {
-			continue
-		}
-		name := f.Name()
-		if strings.HasSuffix(name, ".tmpl") {
-			templates = append(templates, name)
+		if !f.IsDir() && strings.HasSuffix(f.Name(), ".tmpl") {
+			fmt.Printf("  - %s\n", f.Name())
 		}
 	}
-
-	if len(templates) == 0 {
-		return "", fmt.Errorf("no .tmpl files found in %s", TEMPLATES_DIR)
-	}
-
-	sort.Strings(templates)
-
-	// Find default index
-	defaultIdx := 0
-	for i, name := range templates {
-		if name == DEFAULT_TEMPLATE {
-			defaultIdx = i
-			break
-		}
-	}
-
-	fmt.Println("\nAvailable templates:")
-	for i, name := range templates {
-		prefix := "  "
-		if i == defaultIdx {
-			prefix = "* "
-		}
-		fmt.Printf("%s%d) %s\n", prefix, i+1, name)
-	}
-
-	fmt.Printf("\nSelect template (1–%d) [default = %d (%s)]: ",
-		len(templates), defaultIdx+1, templates[defaultIdx])
-
-	input, _ := reader.ReadString('\n')
-	input = strings.TrimSpace(input)
-
-	if input == "" {
-		return filepath.Join(TEMPLATES_DIR, templates[defaultIdx]), nil
-	}
-
-	num, err := strconv.Atoi(input)
-	if err != nil || num < 1 || num > len(templates) {
-		fmt.Printf("Invalid selection → using default (%s)\n", templates[defaultIdx])
-		return filepath.Join(TEMPLATES_DIR, templates[defaultIdx]), nil
-	}
-
-	return filepath.Join(TEMPLATES_DIR, templates[num-1]), nil
 }
 
 // ──────────────────────────────────────────────────────────────────────

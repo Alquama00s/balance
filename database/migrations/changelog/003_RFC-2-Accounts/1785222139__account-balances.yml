@@ -1,0 +1,45 @@
+# account-balances changeset is generated at 2026-07-28 07:02:19 UTC
+databaseChangeLog:
+- changeSet:
+    id: account-balances-1785222139
+    author: Alquama
+    changes:
+      - createTable:
+          ifNotExists: true
+          tableName: account_balances
+          columns:
+            - column:
+                name: sub_account_id
+                type: uuid
+                constraints:
+                  primaryKey: true
+                  nullable: false
+            - column:
+                name: available_balance
+                type: numeric(19,4)
+                defaultValue: 0
+                constraints:
+                  nullable: false
+            - column:
+                name: cleared_balance
+                type: numeric(19,4)
+                defaultValue: 0
+                constraints:
+                  nullable: false
+            - column:
+                name: updated_at
+                type: timestamp
+                defaultValueComputed: CURRENT_TIMESTAMP
+                constraints:
+                  nullable: false
+      - addForeignKeyConstraint:
+          baseTableName: account_balances
+          baseColumnNames: sub_account_id
+          referencedTableName: sub_accounts
+          referencedColumnNames: id
+          constraintName: fk_account_balances_sub_accounts
+      - sql:
+          comment: Grant permissions on account_balances table
+          sql: |
+            GRANT ALL ON TABLE account_balances TO backend;
+          stripComments: false

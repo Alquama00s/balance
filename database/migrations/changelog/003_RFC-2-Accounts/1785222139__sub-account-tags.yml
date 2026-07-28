@@ -1,0 +1,47 @@
+# sub-account-tags changeset is generated at 2026-07-28 07:02:19 UTC
+databaseChangeLog:
+- changeSet:
+    id: sub-account-tags-1785222139
+    author: Alquama
+    changes:
+      - createTable:
+          ifNotExists: true
+          tableName: sub_account_tags
+          columns:
+            - column:
+                name: sub_account_id
+                type: uuid
+                constraints:
+                  nullable: false
+            - column:
+                name: tag_id
+                type: uuid
+                constraints:
+                  nullable: false
+      - addPrimaryKey:
+          tableName: sub_account_tags
+          columnNames: sub_account_id,tag_id
+          constraintName: pk_sub_account_tags
+      - addForeignKeyConstraint:
+          baseTableName: sub_account_tags
+          baseColumnNames: sub_account_id
+          referencedTableName: sub_accounts
+          referencedColumnNames: id
+          constraintName: fk_sub_account_tags_sub_accounts
+      - addForeignKeyConstraint:
+          baseTableName: sub_account_tags
+          baseColumnNames: tag_id
+          referencedTableName: tags
+          referencedColumnNames: id
+          constraintName: fk_sub_account_tags_tags
+      - createIndex:
+          indexName: idx_sub_account_tags_tag_id
+          tableName: sub_account_tags
+          columns:
+            - column:
+                name: tag_id
+      - sql:
+          comment: Grant permissions on sub_account_tags table
+          sql: |
+            GRANT ALL ON TABLE sub_account_tags TO backend;
+          stripComments: false

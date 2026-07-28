@@ -1,0 +1,97 @@
+# recurring-transactions changeset is generated at 2026-07-28 07:02:19 UTC
+databaseChangeLog:
+- changeSet:
+    id: recurring-transactions-1785222139
+    author: Alquama
+    changes:
+      - createTable:
+          ifNotExists: true
+          tableName: recurring_transactions
+          columns:
+            - column:
+                name: id
+                type: uuid
+                defaultValueComputed: uuidv7()
+                constraints:
+                  primaryKey: true
+                  nullable: false
+            - column:
+                name: sub_account_id
+                type: uuid
+                constraints:
+                  nullable: false
+            - column:
+                name: category_id
+                type: uuid
+            - column:
+                name: amount
+                type: numeric(19,4)
+                constraints:
+                  nullable: false
+            - column:
+                name: frequency
+                type: varchar(50)
+                constraints:
+                  nullable: false
+            - column:
+                name: transaction_type
+                type: varchar(50)
+                constraints:
+                  nullable: false
+            - column:
+                name: description
+                type: text
+            - column:
+                name: start_date
+                type: date
+                constraints:
+                  nullable: false
+            - column:
+                name: end_date
+                type: date
+            - column:
+                name: next_execution_at
+                type: timestamp
+                constraints:
+                  nullable: false
+            - column:
+                name: active
+                type: bool
+                defaultValueBoolean: true
+                constraints:
+                  nullable: false
+      - addForeignKeyConstraint:
+          baseTableName: recurring_transactions
+          baseColumnNames: sub_account_id
+          referencedTableName: sub_accounts
+          referencedColumnNames: id
+          constraintName: fk_recurring_transactions_sub_accounts
+      - addForeignKeyConstraint:
+          baseTableName: recurring_transactions
+          baseColumnNames: category_id
+          referencedTableName: categories
+          referencedColumnNames: id
+          constraintName: fk_recurring_transactions_categories
+      - createIndex:
+          indexName: idx_recurring_transactions_active
+          tableName: recurring_transactions
+          columns:
+            - column:
+                name: active
+      - createIndex:
+          indexName: idx_recurring_transactions_next_execution
+          tableName: recurring_transactions
+          columns:
+            - column:
+                name: next_execution_at
+      - createIndex:
+          indexName: idx_recurring_transactions_sub_account_id
+          tableName: recurring_transactions
+          columns:
+            - column:
+                name: sub_account_id
+      - sql:
+          comment: Grant permissions on recurring_transactions table
+          sql: |
+            GRANT ALL ON TABLE recurring_transactions TO backend;
+          stripComments: false

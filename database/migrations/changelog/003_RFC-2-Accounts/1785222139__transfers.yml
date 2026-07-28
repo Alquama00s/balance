@@ -1,0 +1,75 @@
+# transfers changeset is generated at 2026-07-28 07:02:19 UTC
+databaseChangeLog:
+- changeSet:
+    id: transfers-1785222139
+    author: Alquama
+    changes:
+      - createTable:
+          ifNotExists: true
+          tableName: transfers
+          columns:
+            - column:
+                name: id
+                type: uuid
+                defaultValueComputed: uuidv7()
+                constraints:
+                  primaryKey: true
+                  nullable: false
+            - column:
+                name: from_sub_account_id
+                type: uuid
+                constraints:
+                  nullable: false
+            - column:
+                name: to_sub_account_id
+                type: uuid
+                constraints:
+                  nullable: false
+            - column:
+                name: amount
+                type: numeric(19,4)
+                constraints:
+                  nullable: false
+            - column:
+                name: transfer_time
+                type: timestamp
+                constraints:
+                  nullable: false
+            - column:
+                name: note
+                type: text
+      - addForeignKeyConstraint:
+          baseTableName: transfers
+          baseColumnNames: from_sub_account_id
+          referencedTableName: sub_accounts
+          referencedColumnNames: id
+          constraintName: fk_transfers_from_sub_accounts
+      - addForeignKeyConstraint:
+          baseTableName: transfers
+          baseColumnNames: to_sub_account_id
+          referencedTableName: sub_accounts
+          referencedColumnNames: id
+          constraintName: fk_transfers_to_sub_accounts
+      - createIndex:
+          indexName: idx_transfers_from_sub_account_id
+          tableName: transfers
+          columns:
+            - column:
+                name: from_sub_account_id
+      - createIndex:
+          indexName: idx_transfers_to_sub_account_id
+          tableName: transfers
+          columns:
+            - column:
+                name: to_sub_account_id
+      - createIndex:
+          indexName: idx_transfers_transfer_time
+          tableName: transfers
+          columns:
+            - column:
+                name: transfer_time
+      - sql:
+          comment: Grant permissions on transfers table
+          sql: |
+            GRANT ALL ON TABLE transfers TO backend;
+          stripComments: false

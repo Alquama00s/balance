@@ -1,0 +1,32 @@
+# account-types changeset is generated at 2026-07-28 07:02:19 UTC
+databaseChangeLog:
+- changeSet:
+    id: account-types-1785222139
+    author: Alquama
+    changes:
+      - createTable:
+          ifNotExists: true
+          tableName: account_types
+          columns:
+            - column:
+                name: id
+                type: smallint
+                constraints:
+                  primaryKey: true
+                  nullable: false
+            - column:
+                name: code
+                type: varchar(50)
+                constraints:
+                  nullable: false
+                  unique: true
+            - column:
+                name: display_name
+                type: varchar(255)
+                constraints:
+                  nullable: false
+      - sql:
+          comment: Grant permissions on account_types table
+          sql: |
+            GRANT ALL ON TABLE account_types TO backend;
+          stripComments: false

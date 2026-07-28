@@ -1,0 +1,31 @@
+databaseChangeLog:
+  - changeSet:
+        id: add-audit-fk-sub_accounts
+        author: alquama
+        changes:
+          - addForeignKeyConstraint:
+                baseTableName: sub_accounts
+                baseColumnNames: created_by
+                referencedTableName: users
+                referencedColumnNames: id
+                constraintName: created_by_fk_sub_accounts
+                onUpdate: RESTRICT
+          - addForeignKeyConstraint:
+                baseTableName: sub_accounts
+                baseColumnNames: updated_by
+                referencedTableName: users
+                referencedColumnNames: id
+                constraintName: updated_by_fk_sub_accounts
+                onUpdate: RESTRICT
+          - addForeignKeyConstraint:
+                baseTableName: sub_accounts
+                baseColumnNames: deleted_by
+                referencedTableName: users
+                referencedColumnNames: id
+                constraintName: deleted_by_fk_sub_accounts
+                onUpdate: RESTRICT
+          - addNotNullConstraint:
+                tableName: users
+                columnName: created_by
+                columnDataType: uuid
+                validate: false

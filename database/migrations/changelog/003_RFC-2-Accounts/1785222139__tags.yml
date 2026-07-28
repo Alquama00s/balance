@@ -1,0 +1,31 @@
+# tags changeset is generated at 2026-07-28 07:02:19 UTC
+databaseChangeLog:
+- changeSet:
+    id: tags-1785222139
+    author: Alquama
+    changes:
+      - createTable:
+          ifNotExists: true
+          tableName: tags
+          columns:
+            - column:
+                name: id
+                type: uuid
+                defaultValueComputed: uuidv7()
+                constraints:
+                  primaryKey: true
+                  nullable: false
+            - column:
+                name: name
+                type: varchar(255)
+                constraints:
+                  nullable: false
+                  unique: true
+            - column:
+                name: description
+                type: text
+      - sql:
+          comment: Grant permissions on tags table
+          sql: |
+            GRANT ALL ON TABLE tags TO backend;
+          stripComments: false

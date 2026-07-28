@@ -1,0 +1,31 @@
+databaseChangeLog:
+  - changeSet:
+        id: add-audit-fk-budgets
+        author: alquama
+        changes:
+          - addForeignKeyConstraint:
+                baseTableName: budgets
+                baseColumnNames: created_by
+                referencedTableName: users
+                referencedColumnNames: id
+                constraintName: created_by_fk_budgets
+                onUpdate: RESTRICT
+          - addForeignKeyConstraint:
+                baseTableName: budgets
+                baseColumnNames: updated_by
+                referencedTableName: users
+                referencedColumnNames: id
+                constraintName: updated_by_fk_budgets
+                onUpdate: RESTRICT
+          - addForeignKeyConstraint:
+                baseTableName: budgets
+                baseColumnNames: deleted_by
+                referencedTableName: users
+                referencedColumnNames: id
+                constraintName: deleted_by_fk_budgets
+                onUpdate: RESTRICT
+          - addNotNullConstraint:
+                tableName: users
+                columnName: created_by
+                columnDataType: uuid
+                validate: false

@@ -1,0 +1,31 @@
+databaseChangeLog:
+  - changeSet:
+        id: add-audit-fk-transactions
+        author: alquama
+        changes:
+          - addForeignKeyConstraint:
+                baseTableName: transactions
+                baseColumnNames: created_by
+                referencedTableName: users
+                referencedColumnNames: id
+                constraintName: created_by_fk_transactions
+                onUpdate: RESTRICT
+          - addForeignKeyConstraint:
+                baseTableName: transactions
+                baseColumnNames: updated_by
+                referencedTableName: users
+                referencedColumnNames: id
+                constraintName: updated_by_fk_transactions
+                onUpdate: RESTRICT
+          - addForeignKeyConstraint:
+                baseTableName: transactions
+                baseColumnNames: deleted_by
+                referencedTableName: users
+                referencedColumnNames: id
+                constraintName: deleted_by_fk_transactions
+                onUpdate: RESTRICT
+          - addNotNullConstraint:
+                tableName: users
+                columnName: created_by
+                columnDataType: uuid
+                validate: false

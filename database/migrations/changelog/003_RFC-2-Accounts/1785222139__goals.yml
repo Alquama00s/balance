@@ -1,0 +1,89 @@
+# goals changeset is generated at 2026-07-28 07:02:19 UTC
+databaseChangeLog:
+- changeSet:
+    id: goals-1785222139
+    author: Alquama
+    changes:
+      - createTable:
+          ifNotExists: true
+          tableName: goals
+          columns:
+            - column:
+                name: id
+                type: uuid
+                defaultValueComputed: uuidv7()
+                constraints:
+                  primaryKey: true
+                  nullable: false
+            - column:
+                name: sub_account_id
+                type: uuid
+                constraints:
+                  nullable: false
+            - column:
+                name: currency_code
+                type: char(3)
+                constraints:
+                  nullable: false
+            - column:
+                name: name
+                type: varchar(255)
+                constraints:
+                  nullable: false
+            - column:
+                name: target_amount
+                type: numeric(19,4)
+                constraints:
+                  nullable: false
+            - column:
+                name: current_amount
+                type: numeric(19,4)
+                defaultValue: 0
+                constraints:
+                  nullable: false
+            - column:
+                name: target_date
+                type: date
+                constraints:
+                  nullable: false
+            - column:
+                name: completed
+                type: bool
+                defaultValueBoolean: false
+                constraints:
+                  nullable: false
+            - column:
+                name: created_at
+                type: timestamp
+                defaultValueComputed: CURRENT_TIMESTAMP
+                constraints:
+                  nullable: false
+      - addForeignKeyConstraint:
+          baseTableName: goals
+          baseColumnNames: sub_account_id
+          referencedTableName: sub_accounts
+          referencedColumnNames: id
+          constraintName: fk_goals_sub_accounts
+      - addForeignKeyConstraint:
+          baseTableName: goals
+          baseColumnNames: currency_code
+          referencedTableName: currencies
+          referencedColumnNames: code
+          constraintName: fk_goals_currencies
+      - createIndex:
+          indexName: idx_goals_sub_account_id
+          tableName: goals
+          columns:
+            - column:
+                name: sub_account_id
+      - createIndex:
+          indexName: idx_goals_completed
+          tableName: goals
+          columns:
+            - column:
+                name: completed
+      - sql:
+          comment: Grant permissions on goals table
+          sql: |
+            GRANT ALL ON TABLE goals TO backend;
+          stripComments: false

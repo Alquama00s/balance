@@ -1,0 +1,36 @@
+# currencies changeset is generated at 2026-07-28 07:02:02 UTC
+databaseChangeLog:
+- changeSet:
+    id: currencies-1785222122
+    author: Alquama
+    changes:
+      - createTable:
+          ifNotExists: true
+          tableName: currencies
+          columns:
+            - column:
+                name: code
+                type: char(3)
+                constraints:
+                  primaryKey: true
+                  nullable: false
+            - column:
+                name: name
+                type: varchar(255)
+                constraints:
+                  nullable: false
+            - column:
+                name: symbol
+                type: varchar(10)
+                constraints:
+                  nullable: false
+            - column:
+                name: decimal_places
+                type: smallint
+                constraints:
+                  nullable: false
+      - sql:
+          comment: Grant permissions on currencies table
+          sql: |
+            GRANT ALL ON TABLE currencies TO backend;
+          stripComments: false

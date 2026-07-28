@@ -1,0 +1,63 @@
+# audit-logs changeset is generated at 2026-07-28 07:02:19 UTC
+databaseChangeLog:
+- changeSet:
+    id: audit-logs-1785222139
+    author: Alquama
+    changes:
+      - createTable:
+          ifNotExists: true
+          tableName: audit_logs
+          columns:
+            - column:
+                name: id
+                type: uuid
+                defaultValueComputed: uuidv7()
+                constraints:
+                  primaryKey: true
+                  nullable: false
+            - column:
+                name: entity_type
+                type: varchar(255)
+                constraints:
+                  nullable: false
+            - column:
+                name: entity_id
+                type: uuid
+                constraints:
+                  nullable: false
+            - column:
+                name: action_type
+                type: varchar(50)
+                constraints:
+                  nullable: false
+            - column:
+                name: old_value
+                type: jsonb
+            - column:
+                name: new_value
+                type: jsonb
+            - column:
+                name: created_at
+                type: timestamp
+                defaultValueComputed: CURRENT_TIMESTAMP
+                constraints:
+                  nullable: false
+      - createIndex:
+          indexName: idx_audit_logs_created_at
+          tableName: audit_logs
+          columns:
+            - column:
+                name: created_at
+      - createIndex:
+          indexName: idx_audit_logs_entity
+          tableName: audit_logs
+          columns:
+            - column:
+                name: entity_type
+            - column:
+                name: entity_id
+      - sql:
+          comment: Grant permissions on audit_logs table
+          sql: |
+            GRANT ALL ON TABLE audit_logs TO backend;
+          stripComments: false
